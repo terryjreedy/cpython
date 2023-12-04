@@ -24,7 +24,7 @@ from idlelib import debugger_r  # start_debugger
 from idlelib import debugobj_r  # remote_object_tree_item
 from idlelib import iomenu  # encoding
 from idlelib import rpc  # multiple objects
-from idlelib import stackviewer  # StackTreeItem
+from idlelib import stackbrowser  # StackTreeItem
 import __main__
 
 import tkinter  # Use tcl and, if startup fails, messagebox.
@@ -598,9 +598,9 @@ class Executive:
                 except:
                     self.user_exc_info = sys.exc_info()  # For testing.
                     print_exception()
-            jit = self.rpchandler.console.getvar("<<toggle-jit-stack-viewer>>")
+            jit = self.rpchandler.console.getvar("<<toggle-jit-stackbrowser>>")
             if jit:
-                self.rpchandler.interp.open_remote_stack_viewer()
+                self.rpchandler.interp.open_remote_stackbrowser()
         else:
             flush_stdout()
 
@@ -621,7 +621,7 @@ class Executive:
     def get_the_completion_list(self, what, mode):
         return self.autocomplete.fetch_completions(what, mode)
 
-    def stackviewer(self, flist_oid=None):
+    def stackbrowser(self, flist_oid=None):
         if self.user_exc_info:
             _, exc, tb = self.user_exc_info
         else:
@@ -632,7 +632,7 @@ class Executive:
         while tb and tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next
         exc.__traceback__ = tb
-        item = stackviewer.StackTreeItem(exc, flist)
+        item = stackbrowser.StackTreeItem(exc, flist)
         return debugobj_r.remote_object_tree_item(item)
 
 

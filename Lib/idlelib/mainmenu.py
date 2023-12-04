@@ -93,8 +93,8 @@ menudefs = [
  ('debug', [
    ('_Go to File/Line', '<<goto-file-line>>'),
    ('!_Debugger', '<<toggle-debugger>>'),
-   ('_Stack Viewer', '<<open-stack-viewer>>'),
-   ('!_Auto-open Stack Viewer', '<<toggle-jit-stack-viewer>>'),
+   ('_Stack Browser', '<<open-stackbrowser>>'),
+   ('!_Auto-open Stack Browser', '<<toggle-jit-stackbrowser>>'),
    ]),
 
  ('options', [

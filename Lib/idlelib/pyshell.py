@@ -602,8 +602,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 if what is not None:
                     print(repr(what), file=console)
             elif how == "EXCEPTION":
-                if self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
-                    self.remote_stack_viewer()
+                if self.tkconsole.getvar("<<toggle-jit-stackbrowser>>"):
+                    self.remote_stackbrowser()
             elif how == "ERROR":
                 errmsg = "pyshell.ModifiedInterpreter: Subprocess ERROR:\n"
                 print(errmsg, what, file=sys.__stderr__)
@@ -626,22 +626,22 @@ class ModifiedInterpreter(InteractiveInterpreter):
     def getdebugger(self):
         return self.debugger
 
-    def open_remote_stack_viewer(self):
-        """Initiate the remote stack viewer from a separate thread.
+    def open_remote_stackbrowser(self):
+        """Initiate the remote stack browser from a separate thread.
 
         This method is called from the subprocess, and by returning from this
         method we allow the subprocess to unblock.  After a bit the shell
-        requests the subprocess to open the remote stack viewer which returns a
+        requests the subprocess to open the remote stack browser which returns a
         static object looking at the last exception.  It is queried through
         the RPC mechanism.
 
         """
-        self.tkconsole.text.after(300, self.remote_stack_viewer)
+        self.tkconsole.text.after(300, self.remote_stackbrowser)
         return
 
-    def remote_stack_viewer(self):
+    def remote_stackbrowser(self):
         from idlelib import debugobj_r
-        oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
+        oid = self.rpcclt.remotequeue("exec", "stackbrowser", ("flist",), {})
         if oid is None:
             self.tkconsole.root.bell()
             return
@@ -743,8 +743,8 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.tkconsole.resetoutput()
         self.checklinecache()
         InteractiveInterpreter.showtraceback(self)
-        if self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
-            self.tkconsole.open_stack_viewer()
+        if self.tkconsole.getvar("<<toggle-jit-stackbrowser>>"):
+            self.tkconsole.open_stackbrowser()
 
     def checklinecache(self):
         "Remove keys other than '<pyshell#n>'."
@@ -910,9 +910,9 @@ class PyShell(OutputWindow):
         text.bind("<<plain-newline-and-indent>>", self.linefeed_callback)
         text.bind("<<interrupt-execution>>", self.cancel_callback)
         text.bind("<<end-of-file>>", self.eof_callback)
-        text.bind("<<open-stack-viewer>>", self.open_stack_viewer)
+        text.bind("<<open-stackbrowser>>", self.open_stackbrowser)
         text.bind("<<toggle-debugger>>", self.toggle_debugger)
-        text.bind("<<toggle-jit-stack-viewer>>", self.toggle_jit_stack_viewer)
+        text.bind("<<toggle-jit-stackbrowser>>", self.toggle_jit_stackbrowser)
         text.bind("<<copy-with-prompts>>", self.copy_with_prompts_callback)
         if use_subprocess:
             text.bind("<<view-restart>>", self.view_restart_mark)
@@ -1056,7 +1056,7 @@ class PyShell(OutputWindow):
         db = self.interp.getdebugger()
         self.setvar("<<toggle-debugger>>", not not db)
 
-    def toggle_jit_stack_viewer(self, event=None):
+    def toggle_jit_stackbrowser(self, event=None):
         pass # All we need is the variable
 
     def close_debugger(self):
@@ -1364,11 +1364,11 @@ class PyShell(OutputWindow):
                 self.text.tag_remove(self.user_input_insert_tags, index_before)
             self.shell_sidebar.update_sidebar()
 
-    def open_stack_viewer(self, event=None):  # -n mode only
+    def open_stackbrowser(self, event=None):  # -n mode only
         if self.interp.rpcclt:
-            return self.interp.remote_stack_viewer()
+            return self.interp.remote_stackbrowser()
 
-        from idlelib.stackviewer import StackBrowser
+        from idlelib.stackbrowser import StackBrowser
         try:
             StackBrowser(self.root, sys.last_exc, self.flist)
         except:

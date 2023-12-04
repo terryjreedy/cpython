@@ -116,7 +116,7 @@ class VariablesTreeItem(ObjectTreeItem):
 def _stackbrowser(parent):  # htest #
     from idlelib.pyshell import PyShellFileList
     top = tk.Toplevel(parent)
-    top.title("Test StackViewer")
+    top.title("Test StackBrowser")
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x + 50, y + 175))
     flist = PyShellFileList(top)
@@ -128,7 +128,7 @@ def _stackbrowser(parent):  # htest #
 
 if __name__ == '__main__':
     from unittest import main
-    main('idlelib.idle_test.test_stackviewer', verbosity=2, exit=False)
+    main('idlelib.idle_test.test_stackbrowser', verbosity=2, exit=False)
 
     from idlelib.idle_test.htest import run
     run(_stackbrowser)
