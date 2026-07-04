@@ -27,7 +27,6 @@ class IOBindingTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.io.close()
         cls.editwin._close()
         del cls.editwin
         cls.root.update_idletasks()
