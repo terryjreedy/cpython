@@ -23,7 +23,7 @@ class IOBindingTest(unittest.TestCase):
         cls.root = Tk()
         cls.root.withdraw()
         cls.editwin = EditorWindow(root=cls.root)
-        cls.io = iomenu.IOBinding(cls.editwin)
+        cls.io = cls.editwin.io
 
     @classmethod
     def tearDownClass(cls):
