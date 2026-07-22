@@ -13,6 +13,7 @@ TODO:
     * warning stuff (pyshell, run).
 """
 import sys
+import tkinter
 
 # .pyw is for Windows; .pyi is for typing stub files.
 # The extension order is needed for iomenu open/save dialogs.
@@ -63,6 +64,13 @@ def fix_x11_paste(root):
                 '<<Paste>>',
                 'catch {%W delete sel.first sel.last}\n' +
                         root.bind_class(cls, '<<Paste>>'))
+
+# On X11, Tk before 8.7 signals mouse wheel rotations with
+# <Button-4>/<Button-5> events.  It later generates <Mousewheel events
+# as on # other systems.
+x11_buttons = (tkinter.BaseWidget._windowingsystem == 'x11' and
+               tkinter.TkVersion < 8.7)
+def bind_wheel(): pass
 
 
 if __name__ == '__main__':
