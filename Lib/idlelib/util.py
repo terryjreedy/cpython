@@ -13,7 +13,7 @@ TODO:
     * warning stuff (pyshell, run).
 """
 import sys
-import tkinter
+import tkinter  # This module requires gui to run (import).
 
 # .pyw is for Windows; .pyi is for typing stub files.
 # The extension order is needed for iomenu open/save dialogs.
@@ -70,8 +70,10 @@ def fix_x11_paste(root):
 # On X11, Tk 8.6- signals mouse wheel rotations with <Button-4> and
 # <Button-5> events.  With 8.7+, it generates <Mousewheel events
 # as on other systems.  Used here, editor, tree, and test_sidebar.
-x11_buttons = (tkinter.BaseWidget._windowingsystem == 'x11' and
+root = tkinter.Tk()  # Use this as process root?
+x11_buttons = (tkinter.Button(root)._windowingsystem == 'x11' and
                tkinter.TkVersion <= 8.6)
+root.destroy()
 
 def wheel_event(event, widget=None):  # Bound in editor and tree.
     """Handle scrollwheel event.

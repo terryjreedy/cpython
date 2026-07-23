@@ -1,7 +1,9 @@
 """Test util, coverage %"""
 
 import unittest
-from idlelib import util
+from test.support import requires
+requires('gui')
+from idlelib import util  # Creates root and widget.
 
 
 class UtilTest(unittest.TestCase):
