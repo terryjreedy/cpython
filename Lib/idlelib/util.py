@@ -71,8 +71,8 @@ def fix_x11_paste(root):
 # <Button-5> events.  With 8.7+, it generates <Mousewheel events
 # as on other systems.  Used here, editor, tree, and test_sidebar.
 root = tkinter.Tk()  # Use this as process root?
-x11_buttons = (tkinter.Button(root)._windowingsystem == 'x11' and
-               tkinter.TkVersion <= 8.6)
+root.withdraw()
+x11_buttons = root._windowingsystem == 'x11' and tkinter.TkVersion <= 8.6
 root.destroy()
 
 def wheel_event(event, widget=None):  # Bound in editor and tree.
